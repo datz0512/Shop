@@ -1,0 +1,28 @@
+extends ../layouts/main-layout.pug
+
+block title 
+    title #{pageTitle}
+
+block styles   
+    link(rel="stylesheet", href="/css/forms.css")
+    link(rel="stylesheet", href="/css/product.css")
+
+block content   
+    main       
+        form.product-form(action=(editing ? '/admin/edit-product' : '/admin/add-product') method="POST")
+            .form-control
+                label(for="title") Title
+                input(type="text" name="title" id="title" value=(editing && product.title))
+            .form-control
+                label(for="imgUrl") Image URL
+                input(type="url" name="imgUrl" id="imgUrl" value=(editing && product.imgUrl))
+            .form-control
+                label(for="price") Price
+                input(type="number" name="price" id="price" step="0.01" value=(editing && product.price))
+            .form-control
+                label(for="desc") Description
+                textarea(name="desc" rows="5", id="desc") #{editing ? product.desc : ''}
+            if editing 
+                input(type="hidden", name='productId',value=product._id)
+            button.btn(type="submit") #{editing ? 'Update Product' : 'Add Product'} 
+            input(type="hidden", name='_csrf', value=csrfToken)

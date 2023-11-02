@@ -1,0 +1,29 @@
+extends ../layouts/main-layout.pug
+
+block title 
+    title #{pageTitle}
+
+block styles   
+    link(rel="stylesheet", href="/css/main.css")
+    link(rel="stylesheet", href="/css/cart.css")
+
+block content   
+    main
+        if products.length > 0
+            ul.cart__item-list
+                each p in products
+                    li.cart__item 
+                        h1 #{p.productId.title}
+                        h2 #{`Quantity: ${p.quantity}`}
+                        form(action="/cart-delete-item", method="post") 
+                            input(type="hidden", name="productId", value=(p.productId._id)) 
+                            button.btn.danger(type="submit") Delete
+                            input(type="hidden", name='_csrf', value=csrfToken)
+            hr
+            div.centered
+                form(action="/create-order", method="post") 
+                    button.btn(type="submit") Order now!
+                    input(type="hidden", name='_csrf', value=csrfToken)
+        else
+            h1 Nothing there!
+        

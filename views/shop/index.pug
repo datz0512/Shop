@@ -1,0 +1,32 @@
+extends ../layouts/main-layout.pug
+
+block title 
+    title #{pageTitle}
+
+block styles   
+    link(rel="stylesheet", href="/css/main.css")
+    link(rel="stylesheet", href="/css/product.css")
+
+block content   
+    main 
+        if prods.length > 0
+            .grid
+                each product in prods
+                    article.card.product-item
+                        header.card__header
+                            h1.product__title #{product.title}
+                        .card__image
+                            img(src=product.imgUrl, alt=product.title)
+                        .card__content
+                            h2.product__price $#{product.price}
+                            p.product__description #{product.desc}
+                        .card__actions
+                            a(href=`/products/${product._id}` , class='btn') Details 
+                            if isAuthenticated
+                                form(action="/cart", method="post") 
+                                    button.btn(type="submit") Add to cart 
+                                    input(type="hidden", name='_csrf', value=csrfToken)
+                                    input(type="hidden", name="productId", value=product._id)
+        else 
+            h1 No Products Found
+
