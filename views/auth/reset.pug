@@ -11,14 +11,9 @@ block content
     main       
         if errorMessage 
             div.user-message.user-message--error #{errorMessage}
-        form.login-form(action='/login' method="POST")
+        form.login-form(action='/reset' method="POST")
             .form-control
                 label(for="email") E-mail
                 input(type="email" name="email" id="email")
-            .form-control
-                label(for="password") Password
-                input(type="password" name="password" id="password")
-            button.btn(type="submit") Login
+            button.btn(type="submit") Reset Password
             input(type="hidden", name='_csrf', value=csrfToken)
-        div.centered
-            a(href="/reset") Forgot your password ? 
