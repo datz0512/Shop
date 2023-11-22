@@ -13,10 +13,10 @@ block content
             .grid
                 each product in prods
                     article.card.product-item
-                        header.card__header
-                            h1.product__title #{product.title}
                         .card__image
                             img(src=product.imgUrl, alt=product.title)
+                        header.card__header
+                            h1.product__title #{product.title}
                         .card__content
                             h2.product__price $#{product.price}
                             p.product__description #{product.desc}

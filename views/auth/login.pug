@@ -11,13 +11,23 @@ block content
     main       
         if errorMessage 
             div.user-message.user-message--error #{errorMessage}
-        form.login-form(action='/login' method="POST")
+        form.login-form(action='/login' method="POST" novalidate)
             .form-control
                 label(for="email") E-mail
-                input(type="email" name="email" id="email")
+                input(
+                    class=validationErrors.find(e => e.path === 'email') ? 'invalid' : ''
+                    type="email" 
+                    name="email" 
+                    id="email" 
+                    value=oldInput.email)
             .form-control
                 label(for="password") Password
-                input(type="password" name="password" id="password")
+                input(
+                    class=validationErrors.find(e => e.path === 'password') ? 'invalid' : ''
+                    type="password" 
+                    name="password" 
+                    id="password", 
+                    value=oldInput.password)
             button.btn(type="submit") Login
             input(type="hidden", name='_csrf', value=csrfToken)
         div.centered

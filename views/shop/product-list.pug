@@ -13,20 +13,20 @@ block content
             .grid
                 each product in prods
                     article.card.product-item
-                        header.card__header
-                            h1.product__title #{product.title}
                         .card__image
                             img(src=product.imgUrl, alt=product.title)
+                        header.card__header
+                            h1.product__title #{product.title}
                         .card__content
                             h2.product__price $#{product.price}
                             p.product__description #{product.desc}
                         .card__actions
                             a(href=`/products/${product._id}` , class='btn') Details 
                             if isAuthenticated
-                                form(action="/cart", method="post")  
+                                form(action="/cart", method="post") 
+                                    button.btn(type="submit") Add to cart 
                                     input(type="hidden", name='_csrf', value=csrfToken)
                                     input(type="hidden", name="productId", value=product._id)
-                                    button.btn(type="submit") Add to cart
         else 
             h1 No Products Found
 

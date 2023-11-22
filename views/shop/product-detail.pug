@@ -10,11 +10,11 @@ block styles
 block content   
     main.centered 
         h1 #{product.title}
-        hr
         div
-            img(src=product.imgUrl, alt=product.title, width="400" height="400")
+            img.product-detail-img(src=product.imgUrl, alt=product.title)
         h2 $#{product.price}
-        p #{product.desc}
+        div.product-detail-desc
+            p.product-detail-desc-p #{product.desc}
         if isAuthenticated
             form(action="/cart", method="post") 
                 input(type="hidden", name='_csrf', value=csrfToken)
