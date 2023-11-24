@@ -9,19 +9,41 @@ block styles
 
 block content   
     main       
-        form.product-form(action=(editing ? '/admin/edit-product' : '/admin/add-product') method="POST")
+        if errorMessage 
+            div.user-message.user-message--error #{errorMessage}
+        form.product-form(action=(editing ? '/admin/edit-product' : '/admin/add-product') method="POST" novalidate)
             .form-control
                 label(for="title") Title
-                input(type="text" name="title" id="title" value=(editing && product.title))
+                input(
+                    class=validationErrors.find(e => e.path === 'title') ? 'invalid' : ''
+                    type="text" 
+                    name="title" 
+                    id="title" 
+                    value=((editing || hasError) && product.title))
             .form-control
                 label(for="imgUrl") Image URL
-                input(type="url" name="imgUrl" id="imgUrl" value=(editing && product.imgUrl))
+                input(
+                    class=validationErrors.find(e => e.path === 'imgUrl') ? 'invalid' : ''
+                    type="url" 
+                    name="imgUrl" 
+                    id="imgUrl" 
+                    value=((editing || hasError) && product.imgUrl))
             .form-control
                 label(for="price") Price
-                input(type="number" name="price" id="price" step="0.01" value=(editing && product.price))
+                input(
+                    class=validationErrors.find(e => e.path === 'price') ? 'invalid' : ''
+                    type="number" 
+                    name="price" 
+                    id="price" 
+                    step="0.01" 
+                    value=((editing || hasError) && product.price))
             .form-control
                 label(for="desc") Description
-                textarea(name="desc" rows="5", id="desc") #{editing ? product.desc : ''}
+                textarea(
+                    class=validationErrors.find(e => e.path === 'desc') ? 'invalid' : ''
+                    name="desc" 
+                    rows="5", 
+                    id="desc") #{(editing|| hasError) ? product.desc : ''}
             if editing 
                 input(type="hidden", name='productId',value=product._id)
             button.btn(type="submit") #{editing ? 'Update Product' : 'Add Product'} 
