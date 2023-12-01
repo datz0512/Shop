@@ -1,6 +1,42 @@
 .login-form {
-  width: 20rem;
-  max-width: 90%;
-  margin: auto;
-  display: block;
+    width: 20rem;
+    max-width: 90%;
+    margin: auto;
+    display: block;
+    text-align: right;
+}
+
+.login-form .forgot-password {
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+    text-decoration: none;
+    margin-bottom: 1rem;
+}
+
+.login-form .forgot-password:hover {
+    color: rgb(155, 106, 200);
+}
+
+.login-form .dont-have-account a,
+.login-form .dont-have-account span {
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+    text-decoration: none;
+}
+
+.login-form .dont-have-account a:hover {
+    color: rgb(155, 106, 200);
+}
+
+.login-form .dont-have-account {
+    text-align: center;
+}
+
+.required {
+    font-weight: bold;
+}
+.required:after {
+    color: #e32;
+    content: " *";
+    display: inline;
 }

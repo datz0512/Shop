@@ -8,33 +8,38 @@ block styles
     link(rel="stylesheet", href="/css/auth.css")
 
 block content   
-    main       
+    main.form-main          
         if errorMessage 
             div.user-message.user-message--error #{errorMessage}
-        form.login-form(action='/signup' method="POST" novalidate)
-            .form-control
-                label(for="email") E-mail
-                input(
-                    class=validationErrors.find(e => e.path === 'email') ? 'invalid' : ''  
-                    type="email" 
-                    name="email" 
-                    id="email" 
-                    value=oldInput.email)
-            .form-control
-                label(for="password") Password
-                input(
-                    class=validationErrors.find(e => e.path === 'password') ? 'invalid' : '' 
-                    type="password" 
-                    name="password" 
-                    id="password" 
-                    value=oldInput.password)
-            .form-control
-                label(for="confirmPassword") Confirm Password
-                input(
-                    class=validationErrors.find(e => e.path === 'confirmPassword') ? 'invalid' : ''
-                    type="password" 
-                    name="confirmPassword" 
-                    id="confirmPassword", 
-                    value=oldInput.confirmPassword)
-            button.btn(type="submit") Signup
-            input(type="hidden", name='_csrf', value=csrfToken)
+        div.form-container
+            h1.title Signup
+            form.login-form(action='/signup' method="POST" novalidate)
+                .form-control
+                    label.required(for="email") E-mail
+                    input(
+                        class=validationErrors.find(e => e.path === 'email') ? 'invalid' : ''  
+                        type="email" 
+                        name="email" 
+                        id="email" 
+                        value=oldInput.email)
+                .form-control
+                    label.required(for="password") Password
+                    input(
+                        class=validationErrors.find(e => e.path === 'password') ? 'invalid' : '' 
+                        type="password" 
+                        name="password" 
+                        id="password" 
+                        value=oldInput.password)
+                .form-control
+                    label.required(for="confirmPassword") Confirm Password
+                    input(
+                        class=validationErrors.find(e => e.path === 'confirmPassword') ? 'invalid' : ''
+                        type="password" 
+                        name="confirmPassword" 
+                        id="confirmPassword", 
+                        value=oldInput.confirmPassword)
+                button.btn(type="submit") Signup
+                div.dont-have-account
+                    span Already have an account?
+                    a(href="/login")  Login
+                input(type="hidden", name='_csrf', value=csrfToken)

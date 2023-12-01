@@ -6,6 +6,7 @@ const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
 const csrf = require("csurf");
 const flash = require("connect-flash");
+require("dotenv").config();
 
 const errorController = require("./controllers/error");
 const adminRoutes = require("./routes/admin");
@@ -13,8 +14,7 @@ const shopRoutes = require("./routes/shop");
 const authRoutes = require("./routes/auth");
 const User = require("./models/user");
 
-const MONGODB_URI =
-    "mongodb+srv://datblu2003:datbebong123@cluster0.h148z1d.mongodb.net/shop";
+const MONGODB_URI = process.env.MONGODB_URI;
 
 const app = express();
 const store = new MongoDBStore({
@@ -26,6 +26,7 @@ const csrfProtection = csrf();
 
 app.set("view engine", "pug");
 app.set("views", "views");
+app.get("env");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
@@ -68,7 +69,7 @@ app.use(errorController.get404);
 mongoose
     .connect(MONGODB_URI)
     .then(result => {
-        app.listen(3000);
+        app.listen(process.env.PORT);
     })
     .catch(err => {
         console.log(err);

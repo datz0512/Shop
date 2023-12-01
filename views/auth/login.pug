@@ -8,27 +8,32 @@ block styles
     link(rel="stylesheet", href="/css/auth.css")
 
 block content   
-    main       
+    main.form-main       
         if errorMessage 
             div.user-message.user-message--error #{errorMessage}
-        form.login-form(action='/login' method="POST" novalidate)
-            .form-control
-                label(for="email") E-mail
-                input(
-                    class=validationErrors.find(e => e.path === 'email') ? 'invalid' : ''
-                    type="email" 
-                    name="email" 
-                    id="email" 
-                    value=oldInput.email)
-            .form-control
-                label(for="password") Password
-                input(
-                    class=validationErrors.find(e => e.path === 'password') ? 'invalid' : ''
-                    type="password" 
-                    name="password" 
-                    id="password", 
-                    value=oldInput.password)
-            button.btn(type="submit") Login
-            input(type="hidden", name='_csrf', value=csrfToken)
-        div.centered
-            a(href="/reset") Forgot your password ? 
+        div.form-container
+            h1.title Login
+            form.login-form(action='/login' method="POST" novalidate)
+                .form-control
+                    label.required(for="email") E-mail
+                    input(
+                        class=validationErrors.find(e => e.path === 'email') ? 'invalid' : ''
+                        type="email" 
+                        name="email" 
+                        id="email" 
+                        value=oldInput.email)
+                .form-control
+                    label.required(for="password") Password
+                    input(
+                        class=validationErrors.find(e => e.path === 'password') ? 'invalid' : ''
+                        type="password" 
+                        name="password" 
+                        id="password", 
+                        value=oldInput.password)
+                a.forgot-password(href="/reset") Forgot your password ? 
+                button.btn(type="submit") Login
+                div.dont-have-account
+                    span Don't have an account?
+                    a(href="/signup")  Signup
+                input(type="hidden", name='_csrf', value=csrfToken)
+        

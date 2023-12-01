@@ -1,5 +1,14 @@
 .form-control {
-    margin: 1rem 0;
+    /* margin: 1rem 0; */
+    margin-top: 1rem;
+}
+
+.form-control label:hover {
+    cursor: pointer;
+}
+
+.form-control input {
+    padding: 5px;
 }
 
 .form-control label,
@@ -7,22 +16,90 @@
 .form-control textarea {
     display: block;
     width: 100%;
-    margin-bottom: 0.25rem;
 }
 
 .form-control input,
 .form-control textarea {
     border: 1px solid #a1a1a1;
     font: inherit;
-    border-radius: 2px;
+    border-radius: 1px;
 }
 
 .form-control input:focus,
 .form-control textarea:focus {
-    outline-color: #00695c;
+    outline-color: rgb(92, 19, 155);
 }
 
 .form-control input.invalid,
 .form-control textarea.invalid {
     border-color: red;
+}
+
+.form-container {
+    position: relative;
+    min-width: 380px;
+    max-width: 380px;
+    top: -20%;
+    margin: auto;
+    padding: 20px 0px;
+    border-radius: 5px;
+    border: rgb(184, 184, 184) 1px solid;
+}
+
+.form-container .btn {
+    display: inline-block;
+    padding: 0.6rem 1rem;
+    text-decoration: none;
+    font: inherit;
+    border: 1px solid rgb(92, 19, 155);
+    color: white;
+    background-color: rgb(92, 19, 155);
+    border-radius: 3px;
+    cursor: pointer;
+    margin: 1.5rem 0 1rem 0;
+    font-weight: 700;
+    width: 100%;
+}
+
+.form-container .btn:hover,
+.form-container .btn:active {
+    background: white;
+    color: rgb(92, 19, 155);
+}
+
+.form-container .title {
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.form-control .password {
+    display: inline-block;
+    width: 100%;
+}
+.form-control .star {
+    color: red;
+    display: inline-block;
+}
+
+.form-control label {
+    text-align: left;
+    margin-bottom: 0.25rem;
+}
+
+.form-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-control .required label {
+    font-weight: bold;
+}
+
+.form-control .required label:after {
+    color: #e32;
+    content: " *";
+    display: inline;
 }

@@ -3,15 +3,19 @@ const nodemailer = require("nodemailer");
 const { google } = require("googleapis");
 const crypto = require("crypto");
 const { validationResult } = require("express-validator");
+const smtpTransport = require("nodemailer-smtp-transport");
+require("dotenv").config();
 
 const User = require("../models/user");
 
-const CLIENT_ID =
-    "860935289119-kao17rrd80pasag0bl14g6hgj8e6appv.apps.googleusercontent.com";
-const CLIENT_SECRET = "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";
-const REDIRECT_URI = "https://developers.google.com/oauthplayground";
-const REFRESH_TOKEN =
-    "1//041hkLD6a0h2FCgYIARAAGAQSNwF-L9IrHPaMqQmvpqWAPE5VwIVDq8ohCB3_Q88yvLPzxisTqye2yk6NXb6AnO1KA9nlbvrQDQI";
+const CLIENT_ID = process.env.CLIENT_ID;
+const CLIENT_SECRET = process.env.CLIENT_SECRET;
+const REDIRECT_URI = process.env.REDIRECT_URI;
+const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
+const USERMAIL = process.env.USERMAIL;
+const PASS = process.env.PASS;
+
+console.log(USERMAIL, PASS);
 
 const oAuth2Client = new google.auth.OAuth2(
     CLIENT_ID,
@@ -19,21 +23,28 @@ const oAuth2Client = new google.auth.OAuth2(
     REDIRECT_URI
 );
 
-oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
+oAuth2Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
 
-const accessToken = oAuth2Client.getAccessToken();
+const ACCESS_TOKEN = oAuth2Client.getAccessToken();
 
-const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-        type: "OAuth2",
-        user: "datblu2003@gmail.com",
-        clientId: CLIENT_ID,
-        clientSecret: CLIENT_SECRET,
-        refreshToken: REFRESH_TOKEN,
-        accessToken: accessToken,
-    },
-});
+const transporter = nodemailer.createTransport(
+    smtpTransport({
+        service: "gmail",
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false,
+        auth: {
+            type: "OAuth2",
+            user: USERMAIL,
+            pass: PASS,
+            clientId: CLIENT_ID,
+            clientSecret: CLIENT_SECRET,
+            refreshToken: REFRESH_TOKEN,
+            accessToken: ACCESS_TOKEN,
+            expires: 43200,
+        },
+    })
+);
 
 exports.getLogin = (req, res, next) => {
     let message = req.flash("error");
@@ -185,10 +196,10 @@ exports.postSignup = (req, res, next) => {
         .then(result => {
             res.redirect("/login");
             return transporter.sendMail({
-                from: "datblu2003@gmail.com",
+                from: "datz0512shop@gmail.com",
                 to: email,
                 subject: "Signup succeeded!",
-                html: "<h1>You successfully signed up !</h1>",
+                html: "<h1>You have Successfully Signed Up!</h1>",
             });
         })
         .catch(err => {
@@ -220,7 +231,7 @@ exports.postReset = (req, res, next) => {
         User.findOne({ email: req.body.email })
             .then(user => {
                 if (!user) {
-                    req.flash("error", "No account with that account found !");
+                    req.flash("error", "No account with that email found !");
                     return res.redirect("/reset");
                 }
                 user.resetToken = token;
@@ -230,12 +241,17 @@ exports.postReset = (req, res, next) => {
             .then(result => {
                 res.redirect("/");
                 transporter.sendMail({
-                    from: "datblu2003@gmail.com",
+                    from: "datz0512shop@gmail.com",
                     to: req.body.email,
                     subject: "Password reset",
                     html: `
-                        <p>You have requested to reset your password</p>
-                        <p>Click this <a href='http://localhost:3000/reset/${token}'>link</a> to set a new password</p>
+                        <p>Hi ${req.body.email},</p>
+                        <p>Forgot your password ?</p>
+                        <p>We have received a request to reset the password for your account.</p>
+                        <p>To reset your password, click on the button below:</p>
+                        <button style="display: inline-block; padding: 0.5rem 1rem; text-decoration: none; font: inherit; border: 1px solid rgb(92, 19, 155); background: purple; border-radius: 3px; cursor: pointer;">
+                            <a style="text-decoration: none; padding: 10px; font-size: 17px; color: white" href='http://localhost:3000/reset/${token}'>Reset password</a>
+                        </button>
                     `,
                 });
             })
