@@ -1,8 +1,5 @@
 extends ../layouts/main-layout.pug
 
-block title 
-    title #{pageTitle}
-
 block styles   
     link(rel="stylesheet", href="/css/main.css")
     link(rel="stylesheet", href="/css/product.css")
@@ -19,7 +16,7 @@ block content
                             h1.product__title #{product.title}
                         .card__content
                             h1.product__price $#{product.price}
-                            p.product__description #{product.desc}
+                            //- p.product__description #{product.desc}
                         .card__actions
                             a(href=`/products/${product._id}` , class='btn') Details 
                             if isAuthenticated

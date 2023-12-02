@@ -6,10 +6,10 @@
 }
 
 .product-item {
-    width: 17.5rem;
+    width: 20rem;
     max-width: 100%;
     margin: 1rem;
-    min-height: 530px;
+    min-height: 380px;
 }
 
 .product__title {

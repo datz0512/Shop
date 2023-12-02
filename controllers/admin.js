@@ -1,3 +1,4 @@
+const { mongoose } = require("mongoose");
 const Product = require("../models/product");
 
 const { validationResult } = require("express-validator");
@@ -7,7 +8,6 @@ exports.getAddProduct = (req, res, next) => {
         return res.redirect("/login");
     }
     res.render("admin/edit-product", {
-        pageTitle: "Add Product",
         path: "/admin/add-product",
         editing: false,
         hasError: false,
@@ -25,7 +25,6 @@ exports.postAddProduct = (req, res, next) => {
     if (!errors.isEmpty()) {
         console.log(errors.array());
         return res.status(422).render("admin/edit-product", {
-            pageTitle: "Add Product",
             path: "/admin/add-product",
             editing: false,
             hasError: true,
@@ -41,6 +40,7 @@ exports.postAddProduct = (req, res, next) => {
     }
 
     const product = new Product({
+        // _id: new mongoose.Types.ObjectId("654bceca8e1158c2299a4739"),
         title: title,
         price: price,
         desc: desc,
@@ -53,7 +53,9 @@ exports.postAddProduct = (req, res, next) => {
             console.log("Created Product");
             res.redirect("/products");
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            res.redirect("/500");
+        });
 };
 
 exports.getEditProduct = (req, res, next) => {
@@ -68,7 +70,6 @@ exports.getEditProduct = (req, res, next) => {
                 return res.redirect("/");
             }
             res.render("admin/edit-product", {
-                pageTitle: "Edit Product",
                 path: "/admin/edit-product",
                 editing: editMode,
                 product: product,
@@ -92,7 +93,6 @@ exports.postEditProduct = (req, res, next) => {
     if (!errors.isEmpty()) {
         console.log(errors.array());
         return res.status(422).render("admin/edit-product", {
-            pageTitle: "Edit Product",
             path: "/admin/edit-product",
             editing: true,
             hasError: true,
@@ -142,7 +142,7 @@ exports.getProducts = (req, res, next) => {
         .then(products => {
             res.render("admin/products", {
                 prods: products,
-                pageTitle: "Admin Products ",
+
                 path: "/admin/products",
                 isAuthenticated: req.session.isLoggedIn,
             });

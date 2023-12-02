@@ -1,8 +1,5 @@
 extends ../layouts/main-layout.pug
 
-block title 
-    title #{pageTitle}
-
 block styles   
     link(rel="stylesheet", href="/css/forms.css")
     link(rel="stylesheet", href="/css/product.css")
@@ -46,5 +43,5 @@ block content
                     id="desc") #{(editing|| hasError) ? product.desc : ''}
             if editing 
                 input(type="hidden", name='productId',value=product._id)
-            button.btn(type="submit") #{editing ? 'Update Product' : 'Add Product'} 
+            button.btn.mt-1(type="submit") #{editing ? 'Update Product' : 'Add Product'} 
             input(type="hidden", name='_csrf', value=csrfToken)

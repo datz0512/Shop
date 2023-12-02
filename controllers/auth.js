@@ -54,7 +54,6 @@ exports.getLogin = (req, res, next) => {
         message = null;
     }
     res.render("auth/login", {
-        pageTitle: "Login",
         path: "/login",
         errorMessage: message,
         oldInput: {
@@ -75,7 +74,6 @@ exports.postLogin = (req, res, next) => {
     console.log(errorMessage[0]);
     if (!errors.isEmpty()) {
         return res.status(422).render("auth/login", {
-            pageTitle: "Login",
             path: "/login",
             errorMessage: errorMessage[0].msg,
             oldInput: {
@@ -90,7 +88,6 @@ exports.postLogin = (req, res, next) => {
         .then(user => {
             if (!user) {
                 return res.status(422).render("auth/login", {
-                    pageTitle: "Login",
                     path: "/login",
                     errorMessage: "Invalid email or password!",
                     oldInput: {
@@ -112,7 +109,6 @@ exports.postLogin = (req, res, next) => {
                         });
                     }
                     return res.status(422).render("auth/login", {
-                        pageTitle: "Login",
                         path: "/login",
                         errorMessage: "Invalid email or password!",
                         oldInput: {
@@ -148,7 +144,6 @@ exports.getSignup = (req, res, next) => {
         message = null;
     }
     res.render("auth/signup", {
-        pageTitle: "Signup",
         path: "/signup",
         errorMessage: message,
         oldInput: {
@@ -171,7 +166,6 @@ exports.postSignup = (req, res, next) => {
     console.log(errorMessage);
     if (!errors.isEmpty()) {
         return res.status(422).render("auth/signup", {
-            pageTitle: "Signup",
             path: "/signup",
             errorMessage: errorMessage[0].msg,
             oldInput: {
@@ -215,7 +209,6 @@ exports.getReset = (req, res, next) => {
         message = null;
     }
     res.render("auth/reset", {
-        pageTitle: "Reset Password",
         path: "/reset",
         errorMessage: message,
     });
@@ -275,7 +268,6 @@ exports.getNewPassword = (req, res, next) => {
                 message = null;
             }
             res.render("auth/new-password", {
-                pageTitle: "New Password",
                 path: "/new-password",
                 errorMessage: message,
                 userId: user._id.toString(),
