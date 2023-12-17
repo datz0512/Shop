@@ -15,8 +15,6 @@ const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
 const USERMAIL = process.env.USERMAIL;
 const PASS = process.env.PASS;
 
-console.log(USERMAIL, PASS);
-
 const oAuth2Client = new google.auth.OAuth2(
     CLIENT_ID,
     CLIENT_SECRET,
@@ -126,7 +124,11 @@ exports.postLogin = (req, res, next) => {
                     res.redirect("/login");
                 });
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
 };
 
 exports.postLogout = (req, res, next) => {
@@ -249,7 +251,11 @@ exports.postReset = (req, res, next) => {
                 });
             })
             .catch(err => {
-                console.log(err);
+                console.log(err => {
+                    const error = new Error(err);
+                    error.httpStatusCode = 500;
+                    return next(error);
+                });
             });
     });
 };
@@ -274,7 +280,11 @@ exports.getNewPassword = (req, res, next) => {
                 passwordToken: token,
             });
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
 };
 
 exports.postNewPassword = (req, res, next) => {
@@ -309,6 +319,8 @@ exports.postNewPassword = (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
         });
 };
