@@ -8,7 +8,7 @@ block content
     main       
         if errorMessage 
             div.user-message.user-message--error #{errorMessage}
-        form.product-form(action=(editing ? '/admin/edit-product' : '/admin/add-product') method="POST" novalidate)
+        form.product-form(action=(editing ? '/admin/edit-product' : '/admin/add-product') method="POST" novalidate enctype="multipart/form-data")
             .form-control
                 label(for="title") Title
                 input(
@@ -17,14 +17,20 @@ block content
                     name="title" 
                     id="title" 
                     value=((editing || hasError) && product.title))
+            //- .form-control
+            //-     label(for="imgUrl") Image URL
+            //-     input(
+            //-         class=validationErrors.find(e => e.path === 'imgUrl') ? 'invalid' : ''
+            //-         type="url" 
+            //-         name="imgUrl" 
+            //-         id="imgUrl" 
+            //-         value=((editing || hasError) && product.imgUrl))
             .form-control
-                label(for="imgUrl") Image URL
+                label(for="imgUrl") Image
                 input(
-                    class=validationErrors.find(e => e.path === 'imgUrl') ? 'invalid' : ''
-                    type="url" 
-                    name="imgUrl" 
-                    id="imgUrl" 
-                    value=((editing || hasError) && product.imgUrl))
+                    type="file" 
+                    name="image" 
+                    id="image")
             .form-control
                 label(for="price") Price
                 input(
