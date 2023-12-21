@@ -16,5 +16,7 @@ block content
                         ul.orders__products
                             each p in order.products
                                 li.orders__products-item #{`${p.product.title} (${p.quantity})`}
+                        div
+                                a.btn(href=`/orders/${order._id}`) Invoice
         else
             h1 Nothing there!
