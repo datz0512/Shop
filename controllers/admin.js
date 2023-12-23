@@ -1,7 +1,8 @@
-const { mongoose } = require("mongoose");
-const Product = require("../models/product");
-
+// const { mongoose } = require("mongoose");
 const { validationResult } = require("express-validator");
+
+const Product = require("../models/product");
+const fileHelper = require("../utilities/file");
 
 exports.getAddProduct = (req, res, next) => {
     if (!req.session.isLoggedIn) {
@@ -141,6 +142,7 @@ exports.postEditProduct = (req, res, next) => {
             product.price = updatedPrice;
             product.desc = updatedDesc;
             if (image) {
+                fileHelper.deleteFile(product.imgUrl);
                 product.imgUrl = image.path;
             }
             return product.save().then(result => {
@@ -157,9 +159,16 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
     const prodId = req.body.productId;
-    Product.deleteOne({ _id: prodId, userId: req.user._id })
+    Product.findById(prodId)
+        .then(prod => {
+            if (!prod) {
+                return next(new Error("Product not found."));
+            }
+            fileHelper.deleteFile(prod.imgUrl);
+            return Product.deleteOne({ _id: prodId, userId: req.user._id });
+        })
         .then(result => {
-            console.log("Deleted");
+            console.log("Product deleted");
             res.redirect("/admin/products");
         })
         .catch(err => {

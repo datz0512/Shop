@@ -24,6 +24,67 @@ block content
                                     button.btn(type="submit") Add to cart 
                                     input(type="hidden", name='_csrf', value=csrfToken)
                                     input(type="hidden", name="productId", value=product._id)
+            .container.middle
+                .pagination
+                    ul 
+                        if lastPage > 4 
+                            li 
+                                a.disabled Page #{currentPage} of #{lastPage}
+                            if currentPage !== 1 && prevPage !== 1
+                                li 
+                                    a(href="?page=1") First
+                            if currentPage > 1
+                                li 
+                                    a.arrow(href=`?page=${prevPage}`) <<
+                            if currentPage !== 1 && currentPage > 2
+                                li  
+                                    a.disabled ...
+                            if currentPage === lastPage-1 && lastPage < 5
+                                li  
+                                    a(href=`?page=${prevPage-1}`) #{prevPage-1}
+                            if currentPage === lastPage
+                                li 
+                                    a(href=`?page=${prevPage-1}`) #{prevPage-1}
+                            if hasPrevPage 
+                                li
+                                    a(href=`?page=${prevPage}`) #{prevPage}
+                            li 
+                                a(href=`?page=${currentPage}` class='active') #{currentPage}
+                            if hasNextPage
+                                li 
+                                    a(href=`?page=${nextPage}`) #{nextPage}
+                            if currentPage === 1 
+                                li  
+                                    a(href=`?page=${nextPage+1}`) #{nextPage+1}
+
+                            if lastPage < 5 && currentPage <= lastPage - 1 && nextPage !== lastPage
+                                li  
+                                    a(href=`?page=${lastPage}`) #{lastPage}
+                            if lastPage > 4 && currentPage < lastPage-1 
+                                li  
+                                    a.disabled ...
+                            if currentPage !== lastPage
+                                li 
+                                    a.arrow(href=`?page=${nextPage}`) >>
+                            if lastPage !== currentPage && nextPage !== lastPage && lastPage > 4
+                                li 
+                                    a(href=`?page=${lastPage}`) Last
+                        if lastPage < 5
+                            li 
+                                a.disabled Page #{currentPage} of #{lastPage}
+                            if currentPage > 1
+                                li 
+                                    a.arrow(href=`?page=${prevPage}`) <<
+                            - for (var i=1; i<=lastPage; i++)
+                                if currentPage === i
+                                    li 
+                                        a(href=`?page=${i}` class='active') #{i}
+                                else 
+                                    li 
+                                        a(href=`?page=${i}`) #{i}
+                            if currentPage !== lastPage
+                                li 
+                                    a.arrow(href=`?page=${nextPage}`) >>
         else 
             h1 No Products Found
 

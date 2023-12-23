@@ -8,14 +8,9 @@ body {
     padding: 0;
     margin: 0;
     font-family: "Open Sans", sans-serif;
-}
-
-main {
-    position: absolute;
-    padding: 1rem;
-    margin: auto;
-    width: 100%;
-    height: calc(100% - 3.5rem);
+    height: 100%;
+    display: block;
+    position: relative;
 }
 
 form {
@@ -261,6 +256,72 @@ form {
 
 .mt-1 {
     margin-top: 1rem;
+}
+
+/* .pagination {
+    margin-top: 2rem;
+    text-align: center;
+} */
+
+.pagination a {
+    text-decoration: none;
+    color: rgb(92, 19, 155);
+    padding: 5px;
+    border: 1px solid rgb(92, 19, 155);
+    margin: 0 3px;
+}
+
+.pagination a:hover,
+.pagination a:active,
+.pagination a.active {
+    background: rgb(92, 19, 155);
+    color: white;
+}
+
+/* *,
+*::after,
+*::before {
+    box-sizing: border-box;
+} */
+.container {
+    margin: 3rem auto;
+    counter-reset: pagination;
+    text-align: center;
+}
+.container:after {
+    clear: both;
+    content: "";
+    display: table;
+}
+.container ul {
+    width: 100%;
+}
+.middle {
+    width: 40rem;
+}
+.middle ul,
+.middle li {
+    list-style: none;
+    display: inline;
+    padding-left: 0px;
+}
+.middle li {
+    counter-increment: pagination;
+}
+
+.middle li a {
+    display: inline-block;
+    padding: 5px 0.5rem;
+    font-weight: bold;
+}
+
+.middle li a.arrow {
+    padding: 5px 1rem;
+}
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.7;
 }
 
 @media (min-width: 768px) {

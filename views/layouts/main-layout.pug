@@ -6,7 +6,9 @@ html(lang="en")
         //- block title
         title Datz Shop
         link(rel="icon" type="image/x-icon" href="/images/logo.png")
+        link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
         link(rel="stylesheet", href="/css/main.css")
+        link(rel="stylesheet", href="/css/footer.css")
         block styles
     body 
         header.main-header
@@ -36,4 +38,4 @@ html(lang="en")
                             form(action="/logout", method="post")
                                 input(type="hidden", name='_csrf', value=csrfToken)
                                 button(type="submit") Logout
-        block content                        
+        block content

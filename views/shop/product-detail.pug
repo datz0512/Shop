@@ -8,7 +8,7 @@ block content
     main.centered 
         h1 #{product.title}
         div
-            img.product-detail-img(src=product.imgUrl, alt=product.title)
+            img.product-detail-img(src=`/${product.imgUrl}`, alt=product.title)
         h2 $#{product.price}
         div.product-detail-desc
             p.product-detail-desc-p #{product.desc}

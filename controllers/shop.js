@@ -5,12 +5,30 @@ const PDFDocument = require("pdfkit");
 const Product = require("../models/product");
 const Order = require("../models/order");
 
+const ITEMS_PER_PAGE = 3;
+
 exports.getProducts = (req, res, next) => {
+    const page = +req.query.page || 1;
+    let totalItems;
+
     Product.find()
+        .countDocuments()
+        .then(numProducts => {
+            totalItems = numProducts;
+            return Product.find()
+                .skip((page - 1) * ITEMS_PER_PAGE)
+                .limit(ITEMS_PER_PAGE);
+        })
         .then(products => {
             res.render("shop/product-list", {
                 prods: products,
                 path: "/products",
+                currentPage: page,
+                hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+                hasPrevPage: page > 1,
+                nextPage: page + 1,
+                prevPage: page - 1,
+                lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
             });
         })
         .catch(err => {
@@ -37,11 +55,27 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
+    const page = +req.query.page || 1;
+    let totalItems;
+
     Product.find()
+        .countDocuments()
+        .then(numProducts => {
+            totalItems = numProducts;
+            return Product.find()
+                .skip((page - 1) * ITEMS_PER_PAGE)
+                .limit(ITEMS_PER_PAGE);
+        })
         .then(products => {
             res.render("shop/index", {
                 prods: products,
                 path: "/",
+                currentPage: page,
+                hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+                hasPrevPage: page > 1,
+                nextPage: page + 1,
+                prevPage: page - 1,
+                lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
             });
         })
         .catch(err => {
@@ -172,7 +206,6 @@ exports.getInvoice = (req, res, next) => {
             pdfDoc
                 .image("public/images/logo.png", 60, 40, { width: 100 })
                 .fillColor("#000")
-
                 .fontSize(10)
                 .fillColor("#444444")
                 .text("Datz Shop", 200, 50, { align: "right" })
@@ -208,8 +241,8 @@ exports.getInvoice = (req, res, next) => {
             pdfDoc
                 .strokeColor("#aaaaaa")
                 .lineWidth(1)
-                .moveTo(50, tableHeight + 20)
-                .lineTo(550, tableHeight + 20)
+                .moveTo(50, tableHeight + 25)
+                .lineTo(550, tableHeight + 25)
                 .stroke();
 
             let totalPrice = 0;
@@ -218,13 +251,13 @@ exports.getInvoice = (req, res, next) => {
                 totalPrice +=
                     order.products[i].product.price *
                     order.products[i].quantity;
-                position = tableHeight + (i + 1) * 30;
+                position = tableHeight + 5 + (i + 1) * 40;
                 pdfDoc
                     .font("Helvetica")
                     .fontSize(10)
                     .text(order.products[i].product.title, 50, position)
                     .text(
-                        "$" + order.products[i].product.price,
+                        "$" + order.products[i].product.price.toFixed(2),
                         280,
                         position,
                         {
@@ -238,7 +271,7 @@ exports.getInvoice = (req, res, next) => {
                     })
                     .text(
                         "$" +
-                            order.products[i].product.price *
+                            order.products[i].product.price.toFixed(2) *
                                 order.products[i].quantity,
                         0,
                         position,
@@ -258,16 +291,16 @@ exports.getInvoice = (req, res, next) => {
             pdfDoc
                 .font("Helvetica-Bold")
                 .fontSize(14)
-                .text("", 50, position + 40)
-                .text("TOTAL", 280, position + 40, {
+                .text("", 50, position + 50)
+                .text("TOTAL", 280, position + 50, {
                     width: 90,
                     align: "right",
                 })
-                .text("", 370, position + 40, {
+                .text("", 370, position + 50, {
                     width: 90,
                     align: "right",
                 })
-                .text("$" + totalPrice, 0, position + 40, {
+                .text("$" + totalPrice.toFixed(2), 0, position + 50, {
                     align: "right",
                 });
 
