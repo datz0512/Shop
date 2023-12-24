@@ -312,7 +312,7 @@ exports.postNewPassword = (req, res, next) => {
         .then(result => {
             res.redirect("/login");
             transporter.sendMail({
-                from: "datblu2003@gmail.com",
+                from: "datz0512shop@gmail.com",
                 to: resetUser.email,
                 subject: "Password changed successfully!",
                 html: "<h1>You have successfully changed your password!</h1>",

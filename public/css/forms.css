@@ -27,7 +27,7 @@
 
 .form-control input:focus,
 .form-control textarea:focus {
-    outline-color: rgb(92, 19, 155);
+    outline-color: #18163a;
 }
 
 .form-control input.invalid,
@@ -43,7 +43,7 @@
     margin: auto;
     padding: 20px 0px;
     border-radius: 5px;
-    border: rgb(184, 184, 184) 1px solid;
+    border: #18163a 1px solid;
 }
 
 .form-container .btn {
@@ -51,9 +51,9 @@
     padding: 0.6rem 1rem;
     text-decoration: none;
     font: inherit;
-    border: 1px solid rgb(92, 19, 155);
+    border: 1px solid #18163a;
     color: white;
-    background-color: rgb(92, 19, 155);
+    background-color: #18163a;
     border-radius: 3px;
     cursor: pointer;
     margin: 1.5rem 0 1rem 0;
@@ -64,7 +64,7 @@
 .form-container .btn:hover,
 .form-container .btn:active {
     background: white;
-    color: rgb(92, 19, 155);
+    color: #18163a;
 }
 
 .form-container .title {
@@ -92,6 +92,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-top: 20vh;
 }
 
 .form-control .required label {

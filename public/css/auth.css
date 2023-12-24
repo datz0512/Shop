@@ -11,10 +11,11 @@
     margin: 0.5rem 0;
     text-decoration: none;
     margin-bottom: 1rem;
+    color: #2f2d62;
 }
 
 .login-form .forgot-password:hover {
-    color: rgb(155, 106, 200);
+    color: #605a9d;
 }
 
 .login-form .dont-have-account a,
@@ -24,11 +25,23 @@
     text-decoration: none;
 }
 
+.login-form .dont-have-account a {
+    color: #2f2d62;
+}
+
 .login-form .dont-have-account a:hover {
-    color: rgb(155, 106, 200);
+    color: #3a3682;
 }
 
 .login-form .dont-have-account {
+    text-align: center;
+}
+
+.reset-form {
+    width: 20rem;
+    max-width: 90%;
+    margin: auto;
+    display: block;
     text-align: center;
 }
 
