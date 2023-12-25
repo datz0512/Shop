@@ -3,6 +3,10 @@
     margin-top: 1rem;
 }
 
+.form-control label {
+    font-weight: bold;
+}
+
 .form-control label:hover {
     cursor: pointer;
 }
@@ -46,6 +50,11 @@
     border: #18163a 1px solid;
 }
 
+.form-container.add-product {
+    margin-top: -5rem;
+    padding: 0;
+}
+
 .form-container .btn {
     display: inline-block;
     padding: 0.6rem 1rem;
@@ -71,6 +80,10 @@
     text-align: center;
     font-size: 25px;
     font-weight: bold;
+}
+
+.form-container .title.add-product {
+    margin-bottom: 1rem;
 }
 
 .form-control .password {

@@ -184,6 +184,10 @@ form {
     margin: 0.7rem;
 }
 
+.card__content {
+    margin-bottom: 5rem;
+}
+
 .card__image img {
     width: 100%;
     height: 22rem;
@@ -194,6 +198,7 @@ form {
     width: 100%;
     padding: 1rem;
     text-align: center;
+    position: absolute;
     bottom: 0;
 }
 

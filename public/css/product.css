@@ -6,6 +6,7 @@
 }
 
 .product-item {
+    position: relative;
     width: 23vw;
     max-width: 100%;
     margin: 0.5rem;
