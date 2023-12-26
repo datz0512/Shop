@@ -34,6 +34,7 @@
         "nodemailer-smtp-transport": "^2.7.4",
         "pdfkit": "^0.14.0",
         "pug": "^3.0.2",
-        "sequelize": "^6.32.1"
+        "sequelize": "^6.32.1",
+        "stripe": "^14.10.0"
     }
 }

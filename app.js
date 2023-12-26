@@ -7,7 +7,7 @@ const MongoDBStore = require("connect-mongodb-session")(session);
 const csrf = require("csurf");
 const flash = require("connect-flash");
 const multer = require("multer");
-require("dotenv").config();
+require("dotenv").config()
 
 const errorController = require("./controllers/error");
 const adminRoutes = require("./routes/admin");
