@@ -157,10 +157,15 @@ exports.getCheckout = (req, res, next) => {
                             currency: "usd",
                             product_data: {
                                 name: p.productId.title,
-                                description: p.productId.desc,
+                                // description: p.productId.desc,
                             },
                             unit_amount: p.productId.price * 100,
                         },
+                        // adjustable_quantity: {
+                        //     enabled: true,
+                        //     minimum: 1,
+                        //     maximum: 10,
+                        // },
                         quantity: p.quantity,
                     };
                 }),
@@ -174,12 +179,12 @@ exports.getCheckout = (req, res, next) => {
             });
         })
         .then(session => {
-            console.log(session.url);
+            // console.log(session.url);
             // res.status(303).redirect(session.url);
             res.render("shop/checkout", {
                 path: "/checkout",
                 products: products,
-                totalSum: total,
+                totalSum: total.toFixed(2),
                 sessionUrl: session.url,
             });
         })
@@ -284,9 +289,13 @@ exports.getInvoice = (req, res, next) => {
 
             const pdfDoc = new PDFDocument({ size: "A4", margin: 65 });
             res.contentType("application/pdf");
+            // res.setHeader(
+            //     "Content-Disposition",
+            //     'inline; filename="' + invoiceName + '"'
+            // );
             res.setHeader(
                 "Content-Disposition",
-                'inline; filename="' + invoiceName + '"'
+                'attachment; filename="' + invoiceName + '"'
             );
             pdfDoc.pipe(fs.createWriteStream(invoicePath));
             pdfDoc.pipe(res);

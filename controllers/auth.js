@@ -1,48 +1,60 @@
 const bcrypt = require("bcryptjs");
-const nodemailer = require("nodemailer");
-const { google } = require("googleapis");
 const crypto = require("crypto");
 const { validationResult } = require("express-validator");
-const smtpTransport = require("nodemailer-smtp-transport");
+// const smtpTransport = require("nodemailer-smtp-transport");
+// const nodemailer = require("nodemailer");
+// const { google } = require("googleapis");
+const SibApiV3Sdk = require("sib-api-v3-sdk");
+
 require("dotenv").config();
 
 const User = require("../models/user");
 
-const CLIENT_ID = process.env.CLIENT_ID;
-const CLIENT_SECRET = process.env.CLIENT_SECRET;
-const REDIRECT_URI = process.env.REDIRECT_URI;
-const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
-const USERMAIL = process.env.USERMAIL;
-const PASS = process.env.PASS;
+const defaultClient = SibApiV3Sdk.ApiClient.instance;
+let apiKey = defaultClient.authentications["api-key"];
+apiKey.apiKey = process.env.BREVO_API_KEY;
 
-const oAuth2Client = new google.auth.OAuth2(
-    CLIENT_ID,
-    CLIENT_SECRET,
-    REDIRECT_URI
-);
+let apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+let sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
 
-oAuth2Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
+// const CLIENT_ID = process.env.CLIENT_ID;
+// const CLIENT_SECRET = process.env.CLIENT_SECRET;
+// const REDIRECT_URI = process.env.REDIRECT_URI;
+// const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
+// const USERMAIL = process.env.USERMAIL;
+// const PASS = process.env.PASS;
 
-const ACCESS_TOKEN = oAuth2Client.getAccessToken();
+// const oAuth2Client = new google.auth.OAuth2(
+//     CLIENT_ID,
+//     CLIENT_SECRET,
+//     REDIRECT_URI
+// );
 
-const transporter = nodemailer.createTransport(
-    smtpTransport({
-        service: "gmail",
-        host: "smtp.gmail.com",
-        port: 587,
-        secure: false,
-        auth: {
-            type: "OAuth2",
-            user: USERMAIL,
-            pass: PASS,
-            clientId: CLIENT_ID,
-            clientSecret: CLIENT_SECRET,
-            refreshToken: REFRESH_TOKEN,
-            accessToken: ACCESS_TOKEN,
-            expires: 43200,
-        },
-    })
-);
+// oAuth2Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
+// oAuth2Client.generateAuthUrl({
+//     access_type: "offline",
+//     scope: "https://www.googleapis.com/auth/cloudprint",
+// });
+// const ACCESS_TOKEN = oAuth2Client.getAccessToken();
+
+// const transporter = nodemailer.createTransport(
+//     smtpTransport({
+//         service: "gmail",
+//         host: "smtp.gmail.com",
+//         port: 587,
+//         secure: false,
+//         auth: {
+//             type: "OAuth2",
+//             user: USERMAIL,
+//             pass: PASS,
+//             clientId: CLIENT_ID,
+//             clientSecret: CLIENT_SECRET,
+//             refreshToken: REFRESH_TOKEN,
+//             accessToken: ACCESS_TOKEN,
+//             expires: 43200,
+//         },
+//     })
+// );
 
 exports.getLogin = (req, res, next) => {
     let message = req.flash("error");
@@ -191,13 +203,18 @@ exports.postSignup = (req, res, next) => {
         })
         .then(result => {
             res.redirect("/login");
-            return transporter.sendMail({
-                from: "datz0512shop@gmail.com",
-                to: email,
-                subject: "Signup succeeded!",
-                html: "<h1>You have Successfully Signed Up!</h1>",
-            });
+            sendSmtpEmail.sender = {
+                name: "DatzShop",
+                email: "datz0512shop@gmail.com",
+            };
+            sendSmtpEmail.to = [{ email: email, name: email }];
+            sendSmtpEmail.subject = "Signup succeeded!";
+            sendSmtpEmail.htmlContent =
+                "<h1>You have Successfully Signed Up!</h1>";
+
+            return apiInstance.sendTransacEmail(sendSmtpEmail);
         })
+        .then(response => console.log(response))
         .catch(err => {
             console.log(err);
         });
@@ -235,11 +252,16 @@ exports.postReset = (req, res, next) => {
             })
             .then(result => {
                 res.redirect("/");
-                transporter.sendMail({
-                    from: "datz0512shop@gmail.com",
-                    to: req.body.email,
-                    subject: "Password reset",
-                    html: `
+
+                sendSmtpEmail.sender = {
+                    name: "DatzShop",
+                    email: "datz0512shop@gmail.com",
+                };
+                sendSmtpEmail.to = [
+                    { email: req.body.email, name: req.body.email },
+                ];
+                sendSmtpEmail.subject = "Password reset";
+                sendSmtpEmail.htmlContent = `
                         <p>Hi ${req.body.email},</p>
                         <p>Forgot your password ?</p>
                         <p>We have received a request to reset the password for your account.</p>
@@ -247,9 +269,11 @@ exports.postReset = (req, res, next) => {
                         <button style="display: inline-block; padding: 0.5rem 1rem; text-decoration: none; font: inherit; border: 1px solid rgb(92, 19, 155); background: purple; border-radius: 3px; cursor: pointer;">
                             <a style="text-decoration: none; padding: 10px; font-size: 17px; color: white" href='http://localhost:3000/reset/${token}'>Reset password</a>
                         </button>
-                    `,
-                });
+                    `;
+
+                return apiInstance.sendTransacEmail(sendSmtpEmail);
             })
+            .then(response => console.log(JSON.stringify(response)))
             .catch(err => {
                 console.log(err => {
                     const error = new Error(err);
@@ -311,13 +335,21 @@ exports.postNewPassword = (req, res, next) => {
         })
         .then(result => {
             res.redirect("/login");
-            transporter.sendMail({
-                from: "datz0512shop@gmail.com",
-                to: resetUser.email,
-                subject: "Password changed successfully!",
-                html: "<h1>You have successfully changed your password!</h1>",
-            });
+
+            sendSmtpEmail.sender = {
+                name: "DatzShop",
+                email: "datz0512shop@gmail.com",
+            };
+            sendSmtpEmail.to = [
+                { email: resetUser.email, name: resetUser.email },
+            ];
+            sendSmtpEmail.subject = "Password changed successfully!";
+            sendSmtpEmail.htmlContent =
+                "<h1>You have successfully changed your password!</h1>";
+
+            return apiInstance.sendTransacEmail(sendSmtpEmail);
         })
+        .then(response => console.log(response))
         .catch(err => {
             const error = new Error(err);
             error.httpStatusCode = 500;
