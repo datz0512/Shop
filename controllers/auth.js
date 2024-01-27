@@ -267,7 +267,7 @@ exports.postReset = (req, res, next) => {
                         <p>We have received a request to reset the password for your account.</p>
                         <p>To reset your password, click on the button below:</p>
                         <button style="display: inline-block; padding: 0.5rem 1rem; text-decoration: none; font: inherit; border: 1px solid rgb(92, 19, 155); background: purple; border-radius: 3px; cursor: pointer;">
-                            <a style="text-decoration: none; padding: 10px; font-size: 17px; color: white" href='http://localhost:3000/reset/${token}'>Reset password</a>
+                            <a style="text-decoration: none; padding: 10px; font-size: 17px; color: white" href='https://datz-shop-a598f265364b.herokuapp.com/reset/${token}'>Reset password</a>
                         </button>
                     `;
 
