@@ -7,7 +7,7 @@
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "NODE_ENV=production BREVO_API_KEY=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 STRIPE_API=sk_test_51ORdbdB230yA5VeJn8fSBrRHDuX99Dx9TNT33u20iuksXmLqAwr0lUkien784rhEWoxvI2S81vFQJojaZfl7abgL00HoMuNJft MONGODB_URI=mongodb+srv://datblu2003:datbebong123@cluster0.h148z1d.mongodb.net/shop node app.js",
+        "start": "node app.js",
         "start-server": "node app.js",
         "start:dev": "nodemon app.js"
     },
